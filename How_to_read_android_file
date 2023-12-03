@@ -1,0 +1,6 @@
+1)First start with Manifest file
+
+    1)In that see which activity is declared and which has the intent filter and which gets launched
+
+    2)Then go into that activity , check oncreate and see setcontent
+    
