@@ -1,0 +1,3 @@
+//For creating a basic Text
+
+Text(text= "Hello ")
