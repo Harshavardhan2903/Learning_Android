@@ -1,0 +1,105 @@
+This file will teach you about connecting mobile's bluetooth and arduino or to other devices
+
+https://developer.android.com/develop/connectivity/bluetooth
+Refer the above for complete documentation 
+
+My purpose is to build an app to communicate with arduino
+
+1)A discovery process happens and both devices exchange security keys and after pairing and bonding both start exchanging information
+
+2)Using bluetooth's api 
+
+*permissions 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+for android 12 or higher (my phone 9 only)
+
+declare bluetooth_scan -> for scanning
+        bluetooth_advertise -> makes your phone discoverable     . these are runtime permissions and should get from user
+        bluetooth_connect -> if communicates with already paired bluetooth devices
+
+also set max_sdkVersion = 30 , so that this applies only for android 12 and higher
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+for android 11 or lower
+
+declare bluetooth_admin -> only for discovering bt devices
+        bluetooth        ->enough for all communications
+
+also declare uses-feature android.hardware.bluetooth and required = true
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+*checking and getting bluetoothadapter and then do 1)find devices 2)connect to a device 3)transfer data with connected device
+
+*bluetooth api's in android.bluetooth package
+
+
+
+3) Now let us start :
+
+  1)get bluetooth adapter:
+
+first get bluetooth adapter . bluetooth adapter is required for all bluetooth functions and represents the device's bluetooth radio or adapter .
+get it from bluetoothmanager systemservice's refernce and then create a bluetooth adapter object
+
+code:
+<<<<<<<<<<<<<
+
+val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
+val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.getAdapter()
+if (bluetoothAdapter == null) {
+  // Device doesn't support Bluetooth
+}
+
+
+>>>>>>>>>>>>>>>>>>
+
+  2)enable bluetooth
+
+code:
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+if (bluetoothAdapter?.isEnabled == false) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+        }
+else{
+    Toast.makeText(this, "bluetooth is on", Toast.LENGTH_SHORT).show()
+}
+
+private val REQUEST_ENABLE_BT = 1
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == RESULT_OK) {
+                // User enabled Bluetooth
+                Toast.makeText(this, "bluetooth enabled ok", Toast.LENGTH_SHORT).show()
+            }
+            if(resultCode== RESULT_CANCELED){
+                // User declined to enable Bluetooth
+                Toast.makeText(this, "bluetooth why not enable", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+
+
+//all in the main activity
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+
+
+
+
